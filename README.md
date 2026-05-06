@@ -1,68 +1,40 @@
 # onyx-ui-dashboard-runner
 
-`onyx-ui-dashboard-runner` explores frontend apps in Lua. The repository keeps the core rule set compact, then surrounds it with examples that show how the decisions move.
+`onyx-ui-dashboard-runner` keeps a focused Lua implementation around frontend apps. The project goal is to develop a Lua command-oriented project for dashboard scenarios with negative fixtures, human-readable error snapshots, and no production deployment claims.
 
-## Onyx UI Dashboard Runner Notes
+## Why I Keep It Small
 
-The quickest review path is the verifier first, then the fixtures, then the operations note. That order makes it easy to see whether the code, data, and explanation still agree.
+The project exists to keep a narrow engineering decision visible and testable. For this repo, that decision is how view drift and layout risk should influence a review result.
 
-## Why This Exists
+## Onyx UI Dashboard Runner Review Notes
 
-I use this kind of project to make a rule visible before adding more machinery around it. The important part here is not the size of the codebase. It is that the input signals, scoring rule, fixture data, and expected output can all be checked in one sitting.
+The first comparison I would make is `layout risk` against `state pressure` because it shows where the rule is most opinionated.
 
-## Example Scenarios
+## Included Behavior
 
-`degraded` is the first example I would inspect because it lands on the `review` path with a score of -112. The broader file also keeps `degraded` at -112 and `surge` at 207, which gives the model a useful low-to-high spread.
+- `fixtures/domain_review.csv` adds cases for view drift and state pressure.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/onyx-ui-dashboard-walkthrough.md` walks through the case spread.
+- The Lua code includes a review path for `layout risk` and `state pressure`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Implementation Notes
+## Internal Model
 
-The project is organized around a compact model rather than a large framework. Inputs are scored, classified, and checked against golden fixtures. The constants live in code and are mirrored in metadata so documentation drift is easy to catch. The Lua project keeps the module shape simple and validates behavior through a direct script.
+The fixture data drives the tests. The code stays thin, while `metadata/domain-review.json` and `config/review-profile.json` explain what each case is meant to protect.
 
-## Feature Notes
+The Lua implementation avoids hidden state so fixture changes are easy to reason about.
 
-- Models view models with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep interaction state changes visible in code review.
-- Includes extended examples for layout checks, including `surge` and `degraded`.
-- Documents fixture data tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-
-## Try It
+## Try It Locally
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Validation
 
-## Tests
+The verifier is intentionally local. It should fail if the fixture score math, lane assignment, or language-specific test drifts.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Scope
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Code Tour
-
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Roadmap
-
-- Add a loader for `examples/extended_cases.csv` and promote selected cases into the language test suite.
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Add one more frontend apps fixture that focuses on a malformed or borderline input.
-
-## Boundaries
-
-The fixture set is deliberately small. That keeps the review surface clear, but it also means the model should not be treated as a complete domain simulator.
-
-## Local Setup
-
-Clone the repository, enter the directory, and run the verifier. No database server, cloud account, or token is required.
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.

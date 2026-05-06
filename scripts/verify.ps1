@@ -59,3 +59,7 @@ foreach ($pathPattern in $knownPaths) {
 }
 
 lua tests/test_policy.lua
+
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check-onyx-ui-dashboard-detail.ps1
+
+lua tests/test_domain_review.lua
