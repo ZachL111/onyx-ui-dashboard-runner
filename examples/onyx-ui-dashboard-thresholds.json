@@ -1,0 +1,17 @@
+{
+  "repo": "onyx-ui-dashboard-runner",
+  "thresholds": {
+    "signal": 2,
+    "slack": 1,
+    "confidence": 1,
+    "drag": 3,
+    "ship": 178,
+    "watch": 123
+  },
+  "terms": [
+    "view drift",
+    "state pressure",
+    "layout risk",
+    "interaction cost"
+  ]
+}
